@@ -4,7 +4,7 @@ body {
 	font-family: 'Roboto', sans-serif;
 	font-size: 16px;
 	color: #222;
-	background-color: #FaFaFa;
+	background-color: lightsteelblue;
 	text-align: center;
 	line-height: 1.4em;
 }
@@ -50,4 +50,11 @@ li {
 
 a {
 	color: #2574A9;
+}
+
+ul li a {
+  font-family: monospace;
+  padding: 2px;
+  color: black;
+  background-color: #fff;
 }
