@@ -18,33 +18,39 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
-
 // your first API endpoint... 
 app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
 app.get("/api/timestamp/:date_string?", function(req, res, next) {
-   var date = req.params['date_string'];
-   if (date === undefined) {
-    date = new Date();
-    req.unix = date.getTime();
-    req.utc = date.toUTCString();
-  } else {
-    if (!date.includes('-')) {
-      date = parseInt(date);
-    }
-    date = new Date(date);
-    req.unix = date.getTime();
-    req.utc = date.toUTCString();
-  }
+    
+    var date = req.params['date_string'];
   
-  next();
+    if (date === undefined) {
+      date = new Date();
+    } else if ((/\d{4}[-]\d{2}[-]\d{2}/).test(date)) {
+      date = new Date(date);
+    } else if (!isNaN(Number(date))) {
+      date = parseInt(date);
+      date = new Date(date);
+    } else {
+      req.error = true;
+    }
+  
+    if (!req.error) {
+      req.unix = date.getTime();
+      req.utc = date.toUTCString();
+    }
+    
+    next();
 }, function(req, res) {
-  res.json({unix: req.unix, utc: req.utc})
+    if(req.error) {
+      res.json({error: 'Invalid Date'});
+    } else {
+      res.json({unix: req.unix, utc: req.utc});
+    }
 });
-
-
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
