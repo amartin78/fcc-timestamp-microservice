@@ -23,6 +23,7 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+// API timestamp fcc challenge...
 app.get("/api/timestamp/:date_string?", function(req, res, next) {
     
     var date = req.params['date_string'];
@@ -31,7 +32,7 @@ app.get("/api/timestamp/:date_string?", function(req, res, next) {
       date = new Date();
     } else if ((/\d{4}[-]\d{2}[-]\d{2}/).test(date)) {
       date = new Date(date);
-    } else if (!isNaN(Number(date))) {
+    } else if (Number(date)) {
       date = parseInt(date);
       date = new Date(date);
     } else {
